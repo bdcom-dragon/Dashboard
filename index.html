@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Dashboard</title>
+    <style>
+        /* === GLOBAL STYLES === */
+        :root {
+            /* COLOR PALETTE - Easy to customize */
+            --bg-gradient-start: #e0e7ff;  /* Light blue */
+            --bg-gradient-end: #f3e8ff;    /* Light purple */
+            --card-bg: #ffffff;            /* White cards */
+            --text-primary: #1e293b;       /* Dark text */
+            --text-secondary: #64748b;     /* Gray text */
+            --accent-blue: #3b82f6;        /* Blue accent */
+            --accent-purple: #a855f7;      /* Purple accent */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* Modern sans-serif font stack (no external fonts needed) */
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
+                         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            
+            /* Subtle gradient background */
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden; /* Prevents page scrolling */
+        }
+
+        /* === MAIN GRID CONTAINER === */
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;  /* Two equal columns */
+            grid-template-rows: 1fr 1fr;     /* Two equal rows */
+            gap: 30px;                        /* Space between cards */
+            
+            /* PADDING: Top 50px, Right 100px, Bottom 50px, Left 100px */
+            padding: 50px 100px;
+            
+            height: 100%;
+            width: 100%;
+        }
+
+        /* === FLOATING CARD STYLING (Material Design Inspired) === */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;           /* Rounded corners */
+            padding: 32px;
+            
+            /* Material Design shadow - elevated card */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07), 
+                        0 10px 20px rgba(0, 0, 0, 0.06);
+            
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;              /* Keeps content within card */
+            
+            /* Smooth animation transitions */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* HOVER ANIMATION - Card lifts and shadow intensifies */
+        .card:hover {
+            transform: translateY(-8px);   /* Lifts up by 8px */
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1), 
+                        0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        /* === CARD HEADER === */
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            
+            /* Gradient text effect */
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            
+            /* Underline decoration */
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(59, 130, 246, 0.2);
+        }
+
+        /* === LIST CONTAINER === */
+        ul {
+            list-style: none;
+            overflow-y: auto;              /* Scrollable if content is long */
+            flex: 1;                       /* Takes remaining space in card */
+            padding-right: 8px;            /* Space for scrollbar */
+        }
+
+        /* === LIST ITEMS === */
+        li {
+            margin-bottom: 16px;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: var(--text-primary);
+            display: flex;
+            align-items: flex-start;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        /* CUSTOM BULLET POINTS */
+        li::before {
+            content: "•";
+            color: var(--accent-blue);
+            font-size: 1.8rem;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: -4px;
+        }
+
+        /* === SECTION-SPECIFIC COLORS === */
+        
+        /* Daily Goals - Blue theme */
+        .card:nth-child(1) h2 {
+            background: linear-gradient(90deg, #3b82f6, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card:nth-child(1) li::before {
+            color: #3b82f6;
+        }
+
+        /* Remember - Purple theme */
+        .card:nth-child(2) h2 {
+            background: linear-gradient(90deg, #a855f7, #9333ea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card:nth-child(2) li::before {
+            color: #a855f7;
+        }
+
+        /* Life Goals - Indigo theme */
+        .card:nth-child(3) h2 {
+            background: linear-gradient(90deg, #6366f1, #4f46e5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card:nth-child(3) li::before {
+            color: #6366f1;
+        }
+
+        /* Motivation - Pink/Purple theme */
+        .card:nth-child(4) h2 {
+            background: linear-gradient(90deg, #ec4899, #d946ef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card:nth-child(4) li::before {
+            color: #ec4899;
+        }
+
+        /* === CUSTOM SCROLLBAR STYLING === */
+        ul::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ul::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ul::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        ul::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* === RESPONSIVE ADJUSTMENTS === */
+        @media (max-width: 1200px) {
+            .container {
+                padding: 40px 60px;
+                gap: 20px;
+            }
+        }
+
+        /* === CSS STYLES END HERE === */
+    </style>
+</head>
+<body>
+
+    <!-- MAIN GRID CONTAINER -->
+    <div class="container">
+
+        <!-- TOP LEFT: DAILY GOALS -->
+        <div class="card">
+            <h2>Daily Goals</h2>
+            <ul>
+                <li>Complete the project roadmap draft</li>
+                <li>Drink 3 liters of water throughout the day</li>
+                <li>Reply to all pending emails by noon</li>
+                <li>Read 20 pages of a technical book</li>
+                <li>Do a 30-minute workout or yoga session</li>
+                <li>Review and update task priorities</li>
+                <li>Prepare healthy meals for the day</li>
+                <li>Take short breaks every hour to rest eyes</li>
+            </ul>
+        </div>
+
+        <!-- TOP RIGHT: REMEMBER -->
+        <div class="card">
+            <h2>Remember!</h2>
+            <ul>
+                <li>Call Mom at 7 PM today</li>
+                <li>Backup the server data before end of day</li>
+                <li>Doctor's appointment next Tuesday at 3 PM</li>
+                <li>Don't spend too much time on social media</li>
+                <li>Grocery shopping: Milk, Eggs, Coffee, Vegetables</li>
+                <li>Pay electricity bill by the 15th</li>
+                <li>Team meeting tomorrow at 10 AM - prepare notes</li>
+                <li>Car service appointment on Friday</li>
+                <li>Friend's birthday this weekend - buy gift</li>
+            </ul>
+        </div>
+
+        <!-- BOTTOM LEFT: LIFE GOALS -->
+        <div class="card">
+            <h2>Life Goals</h2>
+            <ul>
+                <li>Launch my own SaaS product within 2 years</li>
+                <li>Visit Japan and Iceland before turning 35</li>
+                <li>Achieve financial independence by age 40</li>
+                <li>Learn to play the piano proficiently</li>
+                <li>Run a full marathon (42 km)</li>
+                <li>Master a new programming language every year</li>
+                <li>Write and publish a technical book</li>
+                <li>Build a passive income stream of $5000/month</li>
+                <li>Mentor 10 aspiring developers</li>
+                <li>Create a positive impact in my community</li>
+            </ul>
+        </div>
+
+        <!-- BOTTOM RIGHT: MOTIVATION -->
+        <div class="card">
+            <h2>Motivation</h2>
+            <ul>
+                <li>"The only way to do great work is to love what you do"</li>
+                <li>Discipline is choosing between what you want now and what you want most</li>
+                <li>Small progress is still progress - celebrate it</li>
+                <li>Focus on the solution, not the problem</li>
+                <li>You are capable of more than you know</li>
+                <li>Every expert was once a beginner who didn't give up</li>
+                <li>Your future is created by what you do today, not tomorrow</li>
+                <li>Success is the sum of small efforts repeated daily</li>
+                <li>Don't compare your chapter 1 to someone's chapter 20</li>
+                <li>The best time to start was yesterday, the second best time is now</li>
+            </ul>
+        </div>
+
+    </div>
+
+</body>
+</html>
